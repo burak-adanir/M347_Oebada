@@ -1,0 +1,26 @@
+version: "3.8"
+name: kn05c
+services:
+  container-1:
+    image: nginx:latest
+    container_name: kn05c-1
+    volumes:
+      - type: volume
+        source: kn05c-volume
+        target: "/var/www/html/"
+      - type: bind
+        source: "C:/NoserGit/M347_Oebada/KN05/kn05a"
+        target: /usr/share/nginx/html
+      - type: tmpfs
+        target: "/kn05c"
+    ports:
+      - "8999:80"  # Changed port to 8999
+  container-2:
+    image: nginx:latest
+    container_name: kn05c-2
+    volumes:
+      - kn05c-volume:/usr/share/nginx/html
+    ports:
+      - "8040:80"
+volumes:
+  kn05c-volume: {}
