@@ -1,16 +1,13 @@
 version: '3.8'
-name: kn04-compose
+name: kn04-compose-public
 services:
   database:
-    image: mariadb:latest
+    image: emthree/m347:kn02b-db
     container_name: m347-kn04a-db
     ports:
       - "3306:3306"
-    environment:
-      - MARIADB_ROOT_PASSWORD=example
     networks:
       - kn04-network
-
   web:
     image: emthree/m347:kn02b-web
     container_name: m347-kn04a-web
@@ -20,12 +17,11 @@ services:
       - database
     networks:
       - kn04-network
-
 networks:
   kn04-network:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.20.0.0/16
-          ip_range: 172.20.10.0/24
-          gateway: 172.20.10.254 
+        - subnet: 172.100.0.0/16
+          ip_range: 172.100.5.0/24
+          gateway: 172.100.5.254
