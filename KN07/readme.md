@@ -1,17 +1,18 @@
 # KN07
 ## A) Begriffe und Konzepte erlernen
 ### 1. Unterschied zwischen Pods und Replicas
-Pods sind die kleinsten ausführbaren Einheiten in Kubernetes und können einen oder mehrere Container enthalten, die zusammen auf einem Cluster laufen. Ein Replica ist da, um z eine festgelegte Anzahl identischer Pods gleichzeitig ausgeführt wird, um die Verfügbarkeit und Skalierbarkeit einer Anwendung zu gewährleisten. Einfach gesagt bedeutet dies, dass Pods die Anwendungsinstanz sind, während ein Replica dafür sorgt das genügend Pods laufen, um die Anwendung am Laufen zu halten.
+In Kubernetes sind Pods die kleinsten Einheiten, die jeweils einen oder mehrere Container enthalten können. Replicas sind Regeln, die sicherstellen, dass immer eine bestimmte Anzahl dieser Pods aktiv ist, um die Stabilität und Verfügbarkeit einer Anwendung zu gewährleisten.
 
 ### 2. Unterschied zwischen Service und Deployment
-Ein Service ist wie eine feste Adresse für eine Gruppe von Pods in Kubernetes. Es sorgt dafür, dass andere Teile der Anwendung mit diesen Pods kommunizieren können, ohne sich Gedanken über ihre genauen Standorte machen zu müssen. Es hilft auch dabei, den Verkehr gleichmäßig auf diese Pods zu verteilen.
-Ein Deployment ist eine Anweisung darüber, wie Pods in Kubernetes erstellt und aktualisiert werden sollen. Es ermöglicht es, Änderungen an der Anwendung zu machen, während sie weiter läuft. Zum Beispiel kann es neue Pods hinzufügen oder alte ersetzen, ohne dass die Anwendung für Benutzer offline geht.
+Ein Service in Kubernetes ist eine feste Adresse, die es anderen Teilen der Anwendung erlaubt, mit einer Gruppe von Pods zu kommunizieren, ohne deren genaue Standorte zu kennen. Es verteilt auch den Netzwerkverkehr auf die Pods.
+
+Ein Deployment steuert, wie Pods erstellt und aktualisiert werden. Es ermöglicht es, Änderungen an der laufenden Anwendung vorzunehmen, wie das Hinzufügen oder Ersetzen von Pods, ohne dass die Anwendung offline geht.
 
 ### 3. Welches Problem löst Ingress?
-Ingress ist wie ein Tor für den Verkehr von außen in einen Kubernetes-Cluster. Es nimmt Anfragen von außerhalb des Clusters entgegen und leitet sie an die richtigen Dienste innerhalb des Clusters weiter, basierend auf vordefinierten Regeln. Ohne Ingress müssten alle Dienste im Cluster eigene öffentliche IP-Adressen und Ports haben, was unpraktisch und unübersichtlich wäre.
+Ingress in Kubernetes funktioniert wie ein Tor, das externen Verkehr in den Cluster leitet. Es verteilt eingehende Anfragen nach festgelegten Regeln an die entsprechenden Dienste im Cluster, was die Notwendigkeit für einzelne öffentliche IP-Adressen und Ports für jeden Dienst eliminiert.
 
 ### 4. Für was ist ein StatefulSet?
-Ein StatefulSet in Kubernetes hilft bei der Verwaltung von Anwendungen, die sich an bestimmte Zustände erinnern müssen, wie z. B. der momentan eingeloggte User oder andere Daten, die über längere Zeit gespeichert werden müssen. Im Gegensatz zu Anwendungen, die keine dauerhaften Daten benötigen und einfach dupliziert werden können, müssen stateful Anwendungen bestimmte Daten speichern, die stabil und persistent sind. Zum Beispiel könnte ein StatefulSet für ein Messaging-System verwendet werden, bei dem die Nachrichten auf jedem Node gespeichert sind, um sicherzustellen, dass sie nicht verloren gehen.
+Ein StatefulSet in Kubernetes wird für Anwendungen verwendet, die dauerhafte Daten speichern müssen, wie z.B. Benutzeranmeldungen oder Nachrichten. Es sorgt dafür, dass diese Daten auch bei Neustarts oder Verschiebungen innerhalb des Clusters erhalten bleiben.
 
 ## B) Demo Projekt
 
@@ -19,10 +20,10 @@ Ein StatefulSet in Kubernetes hilft bei der Verwaltung von Anwendungen, die sich
 ![img](get all.png)
 ![img](configmapgetsecret.png)
 
-Der Unterschied liegt beim Deployment und Service erklaerung balablablabl
+Der Unterschied liegt darin, dass wir das Deployment und den Service in derselben Datei erstellt haben, obwohl man sie aber auch in seperaten hätte erstellen können
 
 # MongoURL
-erklärung blablalab
+Die in der mongo-config.yaml angegebene MongoURL ist korrekt, da sie den im mongo-service definierten Namen verwendet. Dieser Name verweist auf die MongoDB-Instanz.
 
 # Master Node describe
 ![img](masterdescribe.png)
@@ -33,7 +34,7 @@ erklärung blablalab
 # Mongo Service
 ![img](mongodbmasterdescribe.png)
 
-erkläunr uterschied blalabala
+Anstatt die Infos und Details der Service webapp-service anzuzeigen, werden die vom mongo-service angezeigt.
 
 ## Website Aufruf
 # Master Node
@@ -44,21 +45,21 @@ erkläunr uterschied blalabala
 
 ![img](node1dog.png)
 
-erkärung balaafb securtiy port 30100rules adding
+ip + 30100 (Port), dazu noch Inbound-Regeln aktualisieren um den Port durchzulassen.
 
 ## Verbindung zu MongoDB Compass
-erkrpugn balalal
+Das Verbindungsproblem zur Datenbank kommt davon, weil der bestimmte Port nicht in AWS aber auch nicht in der Kubernetes Konfiguration freigegeben ist. Wir müssten den Port in der DB-YAML und bei AWS freigeben, um das Problem zu lösen.
 
 ## Port und Replicas anpassen
 
-- In web.yaml den NodePort von 30100 zu 32000 und replicas auf 3 erhöhen
+- In web.yaml mit vim den NodePort von 30100 zu 32000 und replicas auf 3 (mit command ganz schnell) aktualisieren
 - apply Befehl nochmals ausführen
 - Security anpassen
 - Testen mit Aufruf der Website testen und dem ```microk8s kubectl describe service webapp-service command```
 
 ![img](valide3replica.png)
 
-erkl'rung replica unterscheid balalb
+Es gibt nun 3 Endpoints anstelle von 1.
 
 ![img](32000changevim.png)
 
