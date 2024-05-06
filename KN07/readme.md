@@ -49,7 +49,7 @@ ip + 30100 (Port), dazu noch Inbound-Regeln aktualisieren um den Port durchzulas
 
 ## Verbindung zu MongoDB Compass
 Das Verbindungsproblem zur Datenbank kommt davon, weil der bestimmte Port nicht in AWS aber auch nicht in der Kubernetes Konfiguration freigegeben ist. Wir müssten den Port in der DB-YAML und bei AWS freigeben, um das Problem zu lösen.
-
+(Update) es ist nur innerhalb von Kubernetes verfügbar da sie nicht öffentlich freigegeben wure, sie existiert nur in der Kubernetes umgebung!
 ## Port und Replicas anpassen
 
 - In web.yaml mit vim den NodePort von 30100 zu 32000 und replicas auf 3 (mit command ganz schnell) aktualisieren
